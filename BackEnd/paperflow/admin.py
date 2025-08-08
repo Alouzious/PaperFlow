@@ -10,7 +10,7 @@ class SiteSettingsAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ('site_name', 'site_logo', 'logo_preview', 'backgroundimage')
+            'fields': ('site_name', 'site_logo', 'welcomemsg','logo_preview', 'backgroundimage', 'backgroundimage2')
         }),
         ('Contact Info', {
             'fields': ('contact_email', 'whatsapp_number')

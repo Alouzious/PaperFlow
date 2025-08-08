@@ -9,7 +9,9 @@ class SiteSettingsSerializer(serializers.ModelSerializer):
         fields = [
             'site_name',
             'site_logo',
+            'welcomemsg',
             'backgroundimage',
+            'backgroundimage2',
             'contact_email',
             'instagram_url',
             'twitter_url',

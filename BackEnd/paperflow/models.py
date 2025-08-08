@@ -11,8 +11,9 @@ import uuid
 class SiteSettings(models.Model):
     site_name = models.CharField(max_length=100)
     site_logo = models.ImageField(upload_to='site_logos/')
+    welcomemsg = models.CharField(max_length=1000, null=True, blank=True, help_text="Welcome To PaperFlow Site")
     backgroundimage = models.ImageField(upload_to='backgrounds/', blank=True, null=True, help_text="Optional background image for the site")
-    
+    backgroundimage2 = models.ImageField(upload_to='backgrounds/', blank=True, null=True, help_text="Optional background image for the site")
     contact_email = models.EmailField()
 
     instagram_url = models.URLField(blank=True, null=True)
