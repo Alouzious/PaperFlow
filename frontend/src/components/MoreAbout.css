@@ -1,0 +1,574 @@
+/* Ultra Compact About Us Section CSS - SCOPED VERSION */
+
+.about-page {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #475569 100%);
+  position: relative;
+  padding: 2rem 0;
+  margin-top: 2rem;
+  overflow: hidden;
+}
+
+.about-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 75% 75%, rgba(168, 85, 247, 0.08) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+/* SCOPED: All styles are now contained within .about-page */
+.about-page .container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Mini Loading & Error States - SCOPED */
+.about-page .loading-container, 
+.about-page .error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  color: white;
+  text-align: center;
+}
+
+.about-page .loading-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: about-spin 1s linear infinite;
+  margin-bottom: 0.5rem;
+}
+
+@keyframes about-spin {
+  to { transform: rotate(360deg); }
+}
+
+.about-page .error-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.about-page .retry-button {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: white;
+  border: none;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.8rem;
+}
+
+.about-page .retry-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(59, 130, 246, 0.4);
+}
+
+/* Mini Hero Section - SCOPED */
+.about-page .about-hero {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.about-page .hero-content {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.about-page .main-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.about-page .hero-description {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.5;
+  margin-bottom: 0;
+}
+
+/* Mini Section Headers - SCOPED */
+.about-page .section-header {
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.about-page .section-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.25rem;
+}
+
+.about-page .section-divider {
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  margin: 0 auto 0.5rem;
+  border-radius: 1px;
+}
+
+.about-page .section-subtitle {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+/* Mini Mission & Vision - SCOPED */
+.about-page .mission-vision-section {
+  margin-bottom: 2rem;
+}
+
+.about-page .mission-vision-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.about-page .mission-card, 
+.about-page .vision-card {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.about-page .mission-card:hover, 
+.about-page .vision-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.about-page .card-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.about-page .card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.about-page .card-description {
+  font-size: 0.8rem;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+/* Mini Values Section - SCOPED */
+.about-page .values-section {
+  margin-bottom: 2rem;
+}
+
+.about-page .values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.about-page .value-item {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border-radius: 10px;
+  padding: 0.875rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.about-page .value-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.about-page .value-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #3b82f6;
+  margin-bottom: 0.25rem;
+}
+
+.about-page .value-description {
+  color: #64748b;
+  font-size: 0.75rem;
+  line-height: 1.3;
+}
+
+.about-page .values-text {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border-radius: 10px;
+  padding: 1rem;
+  color: #64748b;
+  line-height: 1.5;
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+/* Mini Team Section - SCOPED */
+.about-page .team-section {
+  margin-bottom: 2rem;
+}
+
+.about-page .team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.875rem;
+  margin-top: 1rem;
+}
+
+.about-page .team-member-card {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.about-page .team-member-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+.about-page .member-avatar {
+  width: 45px;
+  height: 45px;
+  margin: 0 auto 0.75rem;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.about-page .member-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.about-page .avatar-fallback {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.about-page .member-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.25rem;
+}
+
+.about-page .member-role {
+  font-size: 0.7rem;
+  color: #3b82f6;
+  font-weight: 500;
+  background: rgba(59, 130, 246, 0.1);
+  padding: 0.15rem 0.5rem;
+  border-radius: 15px;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+.about-page .member-bio {
+  color: #64748b;
+  font-size: 0.7rem;
+  line-height: 1.3;
+  margin-bottom: 0.4rem;
+
+  display: -webkit-box;        /* needed for webkit-line-clamp */
+  -webkit-box-orient: vertical; /* needed for webkit-line-clamp */
+  -webkit-line-clamp: 2;       /* limits to 2 lines */
+  
+  overflow: hidden;            /* hide overflow text */
+  text-overflow: ellipsis;     /* show ... after clipped text */
+  
+  /* For Firefox & others: fallback */
+  display: block;
+  max-height: calc(1.3em * 2); /* line-height * number of lines */
+  line-clamp: 2; /* This is not yet widely supported but future proof */
+  overflow-wrap: break-word; /* ensures words break nicely */
+}
+
+
+.about-page .member-email {
+  color: #3b82f6;
+  text-decoration: none;
+  font-size: 0.7rem;
+  transition: color 0.3s ease;
+}
+
+.about-page .member-email:hover {
+  color: #1d4ed8;
+}
+
+/* Mini Statistics Section - SCOPED */
+.about-page .statistics-section {
+  margin-bottom: 2rem;
+}
+
+.about-page .stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.875rem;
+  margin-top: 1rem;
+}
+
+.about-page .stat-item {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.about-page .stat-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.about-page .stat-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.25rem;
+}
+
+.about-page .stat-label {
+  color: #64748b;
+  font-weight: 500;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.about-page .stats-text {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border-radius: 10px;
+  padding: 1rem;
+  color: #64748b;
+  line-height: 1.5;
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+/* Mini Contact Section - SCOPED */
+.about-page .contact-section {
+  margin-bottom: 1.5rem;
+}
+
+.about-page .contact-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.875rem;
+  margin-top: 1rem;
+}
+
+.about-page .website-card, 
+.about-page .email-card, 
+.about-page .phone-card {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.about-page .website-card:hover, 
+.about-page .email-card:hover, 
+.about-page .phone-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+.about-page .contact-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.about-page .website-card h3, 
+.about-page .email-card h3, 
+.about-page .phone-card h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.4rem;
+}
+
+.about-page .website-card p, 
+.about-page .email-card p, 
+.about-page .phone-card p {
+  color: #64748b;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+  font-size: 0.75rem;
+}
+
+.about-page .website-button, 
+.about-page .email-button, 
+.about-page .phone-button {
+  display: inline-block;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: white;
+  text-decoration: none;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.75rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.about-page .website-button:hover, 
+.about-page .email-button:hover, 
+.about-page .phone-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 12px rgba(59, 130, 246, 0.4);
+}
+
+/* Mini Company Info Section - SCOPED */
+.about-page .company-info-section {
+  margin-bottom: 0.5rem;
+}
+
+.about-page .company-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.about-page .info-item {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border-radius: 10px;
+  padding: 0.875rem;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.about-page .info-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.about-page .info-label {
+  display: block;
+  color: #64748b;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25rem;
+}
+
+.about-page .info-value {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* Responsive Design - SCOPED */
+@media (max-width: 768px) {
+  .about-page {
+    padding: 1.5rem 0;
+  }
+  
+  .about-page .main-title {
+    font-size: 1.5rem;
+  }
+  
+  .about-page .section-title {
+    font-size: 1.2rem;
+  }
+  
+  .about-page .mission-vision-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .about-page .team-grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+  
+  .about-page .contact-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-page {
+    padding: 1rem 0;
+    margin-top: 1rem;
+  }
+  
+  .about-page .main-title {
+    font-size: 1.3rem;
+  }
+  
+  .about-page .section-title {
+    font-size: 1.1rem;
+  }
+  
+  .about-page .mission-card, 
+  .about-page .vision-card {
+    padding: 0.875rem;
+  }
+  
+  .about-page .team-member-card {
+    padding: 0.875rem;
+  }
+  
+  .about-page .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .about-page .company-info-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

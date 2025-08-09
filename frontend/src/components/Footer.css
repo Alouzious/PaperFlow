@@ -1,6 +1,7 @@
-/* Modern Footer CSS for PaperFlow */
+/* Modern Footer CSS for PaperFlow - Scoped for Landing Page */
+/* All classes prefixed with 'landing-' to avoid conflicts */
 
-.footer {
+.landing-footer {
   background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
   color: white;
   position: relative;
@@ -9,7 +10,7 @@
 }
 
 /* Animated background pattern */
-.footer::before {
+.landing-footer::before {
   content: '';
   position: absolute;
   top: 0;
@@ -19,15 +20,15 @@
   background-image: 
     radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
     radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
-  animation: backgroundFloat 20s ease-in-out infinite;
+  animation: landing-backgroundFloat 20s ease-in-out infinite;
 }
 
-@keyframes backgroundFloat {
+@keyframes landing-backgroundFloat {
   0%, 100% { opacity: 0.3; }
   50% { opacity: 0.6; }
 }
 
-.footer-container {
+.landing-footer-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 3rem 1.5rem;
@@ -35,7 +36,7 @@
   z-index: 1;
 }
 
-.footer-grid {
+.landing-footer-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 2.5rem;
@@ -44,14 +45,14 @@
 
 /* Desktop grid layout */
 @media (min-width: 768px) {
-  .footer-grid {
+  .landing-footer-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 3rem;
   }
 }
 
 /* Footer sections */
-.footer-section {
+.landing-footer-section {
   position: relative;
   padding: 1.5rem;
   background: rgba(255, 255, 255, 0.03);
@@ -61,7 +62,7 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.footer-section:hover {
+.landing-footer-section:hover {
   transform: translateY(-8px);
   background: rgba(255, 255, 255, 0.05);
   border-color: rgba(59, 130, 246, 0.3);
@@ -71,7 +72,7 @@
 }
 
 /* Section titles */
-.footer-title {
+.landing-footer-title {
   font-size: 1.25rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
@@ -80,7 +81,7 @@
   padding-bottom: 0.75rem;
 }
 
-.footer-title::after {
+.landing-footer-title::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -92,12 +93,12 @@
   transition: width 0.3s ease;
 }
 
-.footer-section:hover .footer-title::after {
+.landing-footer-section:hover .landing-footer-title::after {
   width: 60px;
 }
 
 /* About section */
-.footer-description {
+.landing-footer-description {
   font-size: 0.95rem;
   line-height: 1.7;
   color: #cbd5e1;
@@ -105,7 +106,7 @@
 }
 
 /* Quick links */
-.footer-links {
+.landing-footer-links {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -114,7 +115,7 @@
   gap: 0.75rem;
 }
 
-.footer-link {
+.landing-footer-link {
   color: #cbd5e1;
   text-decoration: none;
   font-size: 0.95rem;
@@ -125,7 +126,7 @@
   overflow: hidden;
 }
 
-.footer-link::before {
+.landing-footer-link::before {
   content: '';
   position: absolute;
   top: 0;
@@ -136,18 +137,18 @@
   transition: left 0.5s ease;
 }
 
-.footer-link:hover {
+.landing-footer-link:hover {
   color: #3b82f6;
   transform: translateX(8px);
   text-decoration: none;
 }
 
-.footer-link:hover::before {
+.landing-footer-link:hover::before {
   left: 100%;
 }
 
 /* Contact section */
-.contact-item {
+.landing-contact-item {
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -159,13 +160,13 @@
   transition: all 0.3s ease;
 }
 
-.contact-item:hover {
+.landing-contact-item:hover {
   background: rgba(59, 130, 246, 0.1);
   color: #ffffff;
   transform: translateX(4px);
 }
 
-.contact-icon {
+.landing-contact-icon {
   width: 18px;
   height: 18px;
   display: flex;
@@ -177,11 +178,11 @@
   flex-shrink: 0;
 }
 
-.contact-text {
+.landing-contact-text {
   flex: 1;
 }
 
-.website-link {
+.landing-website-link {
   color: #cbd5e1;
   text-decoration: none;
   transition: all 0.3s ease;
@@ -190,22 +191,22 @@
   gap: 0.5rem;
 }
 
-.website-link:hover {
+.landing-website-link:hover {
   color: #3b82f6;
   text-decoration: none;
 }
 
-.website-link span {
+.landing-website-link span {
   font-size: 1rem;
   transition: transform 0.3s ease;
 }
 
-.website-link:hover span {
+.landing-website-link:hover span {
   transform: scale(1.2) rotate(10deg);
 }
 
 /* Copyright section */
-.footer-copyright {
+.landing-footer-copyright {
   text-align: center;
   font-size: 0.9rem;
   color: #64748b;
@@ -215,7 +216,7 @@
   position: relative;
 }
 
-.footer-copyright::before {
+.landing-footer-copyright::before {
   content: '';
   position: absolute;
   top: -1px;
@@ -227,7 +228,7 @@
 }
 
 /* Floating elements animation */
-.footer-section::before {
+.landing-footer-section::before {
   content: '';
   position: absolute;
   top: -2px;
@@ -241,126 +242,126 @@
   z-index: -1;
 }
 
-.footer-section:hover::before {
+.landing-footer-section:hover::before {
   opacity: 1;
 }
 
 /* Responsive design */
 @media (max-width: 767px) {
-  .footer {
+  .landing-footer {
     margin-top: 3rem;
   }
   
-  .footer-container {
+  .landing-footer-container {
     padding: 2.5rem 1rem;
   }
   
-  .footer-grid {
+  .landing-footer-grid {
     gap: 2rem;
   }
   
-  .footer-section {
+  .landing-footer-section {
     padding: 1.25rem;
   }
   
-  .footer-title {
+  .landing-footer-title {
     font-size: 1.1rem;
     margin-bottom: 1.25rem;
   }
   
-  .footer-description {
+  .landing-footer-description {
     font-size: 0.9rem;
   }
   
-  .footer-links {
+  .landing-footer-links {
     gap: 0.5rem;
   }
   
-  .footer-link {
+  .landing-footer-link {
     font-size: 0.9rem;
     padding: 0.4rem 0;
   }
   
-  .contact-item {
+  .landing-contact-item {
     font-size: 0.9rem;
     margin-bottom: 0.75rem;
   }
 }
 
 @media (max-width: 480px) {
-  .footer-container {
+  .landing-footer-container {
     padding: 2rem 0.75rem;
   }
   
-  .footer-section {
+  .landing-footer-section {
     padding: 1rem;
     margin: 0 0.5rem;
   }
   
-  .footer-title {
+  .landing-footer-title {
     font-size: 1rem;
   }
   
-  .footer-description {
+  .landing-footer-description {
     font-size: 0.85rem;
   }
   
-  .footer-link {
+  .landing-footer-link {
     font-size: 0.85rem;
   }
   
-  .contact-item {
+  .landing-contact-item {
     font-size: 0.85rem;
   }
 }
 
 /* Dark mode enhancements */
 @media (prefers-color-scheme: dark) {
-  .footer {
+  .landing-footer {
     background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
   }
   
-  .footer-section {
+  .landing-footer-section {
     background: rgba(255, 255, 255, 0.02);
     border-color: rgba(255, 255, 255, 0.05);
   }
   
-  .footer-section:hover {
+  .landing-footer-section:hover {
     background: rgba(255, 255, 255, 0.04);
   }
 }
 
 /* Print styles */
 @media print {
-  .footer {
+  .landing-footer {
     background: #1e293b !important;
     color: #000 !important;
     box-shadow: none !important;
   }
   
-  .footer-section {
+  .landing-footer-section {
     background: none !important;
     border: 1px solid #ccc !important;
   }
   
-  .footer-link:hover {
+  .landing-footer-link:hover {
     transform: none !important;
   }
 }
 
 /* High contrast mode */
 @media (prefers-contrast: high) {
-  .footer {
+  .landing-footer {
     background: #000000;
     border-top: 3px solid #ffffff;
   }
   
-  .footer-section {
+  .landing-footer-section {
     background: rgba(255, 255, 255, 0.1);
     border: 2px solid rgba(255, 255, 255, 0.3);
   }
   
-  .footer-title::after {
+  .landing-footer-title::after {
     background: #ffffff;
   }
 }

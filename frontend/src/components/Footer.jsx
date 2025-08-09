@@ -9,61 +9,61 @@ const Footer = ({ siteSettings, aboutData }) => {
     : '#';
 
   return (
-    <footer className="footer">
-      <div className="footer-container">
-        <div className="footer-grid">
+    <footer className="landing-footer">
+      <div className="landing-footer-container">
+        <div className="landing-footer-grid">
           
           {/* About Section */}
-          <div className="footer-section">
-            <h4 className="footer-title">About PaperFlow</h4>
-            <p className="footer-description">
+          <div className="landing-footer-section">
+            <h4 className="landing-footer-title">About PaperFlow</h4>
+            <p className="landing-footer-description">
               PaperFlow helps institutions digitize and manage academic records securely and efficiently.
             </p>
           </div>
 
           {/* Quick Links Section */}
-          <div className="footer-section">
-            <h4 className="footer-title">Quick Links</h4>
-            <ul className="footer-links">
+          <div className="landing-footer-section">
+            <h4 className="landing-footer-title">Quick Links</h4>
+            <ul className="landing-footer-links">
               <li>
-                <a href="/" className="footer-link">Home</a>
+                <a href="/" className="landing-footer-link">Home</a>
               </li>
               <li>
-                <a href="#about" className="footer-link">About Us</a>
+                <a href="#about" className="landing-footer-link">About Us</a>
               </li>
               <li>
-                <a href="#how-it-works" className="footer-link">How It Works</a>
+                <a href="#how-it-works" className="landing-footer-link">How It Works</a>
               </li>
             </ul>
           </div>
 
           {/* Contact Info Section */}
-          <div className="footer-section">
-            <h4 className="footer-title">Contact Us</h4>
+          <div className="landing-footer-section">
+            <h4 className="landing-footer-title">Contact Us</h4>
             
-            <div className="contact-item">
-              <div className="contact-icon">✉</div>
-              <div className="contact-text">
+            <div className="landing-contact-item">
+              <div className="landing-contact-icon">✉</div>
+              <div className="landing-contact-text">
                 {siteSettings?.contact_email || 'info@paperflow.org'}
               </div>
             </div>
             
-            <div className="contact-item">
-              <div className="contact-icon">📞</div>
-              <div className="contact-text">
+            <div className="landing-contact-item">
+              <div className="landing-contact-icon">📞</div>
+              <div className="landing-contact-text">
                 {siteSettings?.whatsapp_number || '+256-700-123-456'}
               </div>
             </div>
             
             {aboutData?.website && (
-              <div className="contact-item">
-                <div className="contact-icon">🌐</div>
-                <div className="contact-text">
+              <div className="landing-contact-item">
+                <div className="landing-contact-icon">🌐</div>
+                <div className="landing-contact-text">
                   <a
                     href={website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="website-link"
+                    className="landing-website-link"
                   >
                     <span>🌐</span> Visit Our Website
                   </a>
@@ -74,7 +74,7 @@ const Footer = ({ siteSettings, aboutData }) => {
         </div>
 
         {/* Copyright Section */}
-        <div className="footer-copyright">
+        <div className="landing-footer-copyright">
           &copy; {new Date().getFullYear()} PaperFlow. All rights reserved.
         </div>
       </div>

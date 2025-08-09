@@ -104,3 +104,68 @@ class HowItWorksAdmin(admin.ModelAdmin):
             return format_html('<img src="{}" width="200" style="border-radius:6px;" />', obj.image.url)
         return "No Preview"
     image_preview.short_description = "Image Preview"
+
+
+from django.contrib import admin
+from .models import Faculty, Course, AcademicYear, YearLevel, Semester, Note
+
+@admin.register(Faculty)
+class FacultyAdmin(admin.ModelAdmin):
+    list_display = ('name', 'code', 'created_at')
+    search_fields = ('name', 'code')
+    ordering = ('name',)
+
+class AcademicYearInline(admin.TabularInline):
+    model = AcademicYear
+    extra = 1
+
+@admin.register(Course)
+class CourseAdmin(admin.ModelAdmin):
+    list_display = ('code', 'name', 'faculty', 'course_type', 'duration_years', 'created_at')
+    list_filter = ('faculty', 'course_type')
+    search_fields = ('name', 'code', 'faculty__name')
+    ordering = ('faculty', 'name')
+    inlines = [AcademicYearInline]
+
+class YearLevelInline(admin.TabularInline):
+    model = YearLevel
+    extra = 1
+
+@admin.register(AcademicYear)
+class AcademicYearAdmin(admin.ModelAdmin):
+    list_display = ('course', 'year', 'is_current', 'created_at')
+    list_filter = ('course__faculty', 'year', 'is_current')
+    search_fields = ('course__name', 'course__code', 'year')
+    ordering = ('-year',)
+    inlines = [YearLevelInline]
+
+class SemesterInline(admin.TabularInline):
+    model = Semester
+    extra = 2
+
+@admin.register(YearLevel)
+class YearLevelAdmin(admin.ModelAdmin):
+    list_display = ('academic_year', 'level', 'name')
+    list_filter = ('academic_year__course__faculty', 'academic_year__year')
+    search_fields = ('academic_year__course__name', 'name')
+    ordering = ('academic_year', 'level')
+    inlines = [SemesterInline]
+
+class NoteInline(admin.TabularInline):
+    model = Note
+    extra = 1
+
+@admin.register(Semester)
+class SemesterAdmin(admin.ModelAdmin):
+    list_display = ('year_level', 'semester_number', 'name')
+    list_filter = ('year_level__academic_year__year', 'semester_number')
+    search_fields = ('year_level__academic_year__course__name', 'name')
+    ordering = ('year_level', 'semester_number')
+    inlines = [NoteInline]
+
+@admin.register(Note)
+class NoteAdmin(admin.ModelAdmin):
+    list_display = ('title', 'semester', 'note_type', 'uploaded_at', 'file_size_mb')
+    list_filter = ('note_type', 'uploaded_at', 'semester__year_level__academic_year__year')
+    search_fields = ('title', 'semester__year_level__academic_year__course__name')
+    ordering = ('-uploaded_at',)

@@ -209,7 +209,7 @@ const HeroDashboard = () => {
         /* Hero Section Styles */
         .hero-section {
           position: relative;
-          min-height: 75vh;
+          min-height: 80vh;
           display: flex;
           align-items: center;
           justify-content: space-between;
