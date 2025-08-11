@@ -34,6 +34,8 @@ function App() {
             path="/papers/:facultyCode/:courseCode" 
             element={isRegistered ? <PaperPage /> : <Navigate to="/" replace />}
           />
+          // In your main App.js or router setup
+          <Route path="/notes/:facultyCode/:courseCode" element={<PaperPage />} />
           
           {/* Add the new notes route */}
           <Route 
