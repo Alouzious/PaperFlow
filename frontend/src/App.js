@@ -4,7 +4,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Home from './Pages/Home';
 import Dashboard from './Pages/Dashboard';
 import FormPage from './Pages/FormPage';
-import './App.css'; // Import the responsive CSS
+import PaperPage from './Pages/PaperPage';
+import './App.css';
 
 function App() {
   const [isRegistered, setIsRegistered] = useState(false);
@@ -27,6 +28,19 @@ function App() {
       <Router>
         <Routes>
           <Route path="/form" element={<FormPage />} />
+          
+          {/* Keep your existing papers route */}
+          <Route 
+            path="/papers/:facultyCode/:courseCode" 
+            element={isRegistered ? <PaperPage /> : <Navigate to="/" replace />}
+          />
+          
+          {/* Add the new notes route */}
+          <Route 
+            path="/notes/:facultyCode/:courseCode" 
+            element={isRegistered ? <PaperPage /> : <Navigate to="/" replace />}
+          />
+          
           <Route 
             path="/" 
             element={
@@ -35,8 +49,9 @@ function App() {
               ) : (
                 <Home onRegister={handleRegistration} />
               )
-            } 
+            }
           />
+          
           <Route 
             path="/dashboard" 
             element={
@@ -45,7 +60,7 @@ function App() {
               ) : (
                 <Navigate to="/" replace />
               )
-            } 
+            }
           />
         </Routes>
       </Router>
