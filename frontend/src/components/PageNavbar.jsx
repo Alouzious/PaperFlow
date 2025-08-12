@@ -1,9 +1,9 @@
 // src/components/Navbar.jsx
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import './Navbar.css';
+import './PageNavbar.css';
 
-const Navbar = ({ isRegistered }) => {
+const Navbar = () => {
   const [siteSettings, setSiteSettings] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -145,41 +145,25 @@ const Navbar = ({ isRegistered }) => {
 
         {/* Desktop Navigation */}
         <ul className="navbar-links">
-          {isRegistered ? (
-            <>
-              <li>
-                <Link to="/faculty">Faculty</Link>
-              </li>
-              <li>
-                <Link to="/about">About</Link>
-              </li>
-              <li>
-                <Link to="/contact">Contact Us</Link>
-              </li>
-              <li>
-                <Link to="/help">Help?</Link>
-              </li>
-              {student && (
-                <li className="user-profile">
-                  <div className="user-info">
-                    <span className="avatar-circle">{avatarInitials}</span>
-                    <span className="user-name">{student.full_name}</span>
-                  </div>
-                </li>
-              )}
-            </>
-          ) : (
-            <>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <a href="#about">About</a>
-              </li>
-              <li>
-                <a href="#how-it-works">How It Works</a>
-              </li>
-            </>
+          <li>
+            <Link to="/#faculties">Faculties</Link>
+          </li>
+          <li>
+            <Link to="/#about">About</Link>
+          </li>
+          <li>
+            <Link to="#contact">Contact Us</Link>
+          </li>
+          <li>
+            <Link to="/help">Help?</Link>
+          </li>
+          {student && (
+            <li className="user-profile">
+              <div className="user-info">
+                <span className="avatar-circle">{avatarInitials}</span>
+                <span className="user-name">{student.full_name}</span>
+              </div>
+            </li>
           )}
         </ul>
 
@@ -205,60 +189,38 @@ const Navbar = ({ isRegistered }) => {
         <div className={`mobile-menu ${isMobileMenuOpen ? 'active' : ''}`}>
           <div className="mobile-menu-content">
             <ul className="navbar-links">
-              {isRegistered ? (
-                <>
-                  <li>
-                    <Link to="/dashboard" onClick={handleLinkClick}>
-                      Dashboard
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="#faculties" onClick={handleLinkClick}>
-                      Faculties
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="#about" onClick={handleLinkClick}>
-                      About
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="#contact" onClick={handleLinkClick}>
-                      Contact Us
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/help" onClick={handleLinkClick}>
-                      Help?
-                    </Link>
-                  </li>
-                  {student && (
-                    <li className="mobile-user-profile">
-                      <div className="user-info">
-                        <span className="avatar-circle">{avatarInitials}</span>
-                        <span className="user-name">{student.full_name}</span>
-                      </div>
-                    </li>
-                  )}
-                </>
-              ) : (
-                <>
-                  <li>
-                    <Link to="/" onClick={handleLinkClick}>
-                      Home
-                    </Link>
-                  </li>
-                  <li>
-                    <a href="#about" onClick={handleLinkClick}>
-                      About
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#how-it-works" onClick={handleLinkClick}>
-                      How It Works
-                    </a>
-                  </li>
-                </>
+              <li>
+                <Link to="/dashboard" onClick={handleLinkClick}>
+                  Dashboard
+                </Link>
+              </li>
+              <li>
+                <Link to="/faculty" onClick={handleLinkClick}>
+                  Faculty
+                </Link>
+              </li>
+              <li>
+                <Link to="/about" onClick={handleLinkClick}>
+                  About
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" onClick={handleLinkClick}>
+                  Contact Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/help" onClick={handleLinkClick}>
+                  Help?
+                </Link>
+              </li>
+              {student && (
+                <li className="mobile-user-profile">
+                  <div className="user-info">
+                    <span className="avatar-circle">{avatarInitials}</span>
+                    <span className="user-name">{student.full_name}</span>
+                  </div>
+                </li>
               )}
             </ul>
           </div>

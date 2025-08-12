@@ -1,7 +1,7 @@
 // CourseNotesPage.jsx - With Navbar and Footer integration
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Navbar from '../components/Navbar'; // Adjust path as needed
+import Navbar from '../components/PageNavbar'; // Adjust path as needed
 import MainFooter from '../components/MainFooter'; // Adjust path as needed
 import './PaperPage.css';
 

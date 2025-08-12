@@ -175,8 +175,8 @@ const MainFooter = () => {
   // Navigation links
   const quickLinks = [
     { href: "/", label: "Home" },
-    { href: "#about", label: "About Us" },
-    { href: "#faculties", label: "Faculties" },
+    { href: "/#about", label: "About Us" },
+    { href: "/#faculties", label: "Faculties" },
     { href: "#services", label: "Services" },
     { href: "#contact", label: "Contact" },
   ];
@@ -241,7 +241,7 @@ const MainFooter = () => {
             </p>
             
             {/* Contact Info */}
-            <div className="footer-contact">
+            <div className="footer-contact" id='contact'>
               {siteSettings?.contact_email && (
                 <div className="contact-item">
                   <div className="contact-icon email">

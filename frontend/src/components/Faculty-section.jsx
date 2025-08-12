@@ -55,13 +55,13 @@ function FacultyCard({ faculty, navigate }) {
   };
 
   return (
-    <div className="faculty-card">
+    <div className="faculty-card" >
       <div className="faculty-header">
         <h2 className="faculty-name">{faculty.name}</h2>
         <p className="faculty-description">{faculty.description}</p>
       </div>
 
-      <div className="courses-container">
+      <div className="courses-container" id='faculties'>
         {/* Bachelor Courses Column */}
         <div className="course-section">
           <div className="section-header bachelor-header">

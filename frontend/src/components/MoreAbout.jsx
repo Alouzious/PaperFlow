@@ -87,7 +87,7 @@ const About = () => {
   // Loading state
   if (loading) {
     return (
-      <div className="loading-container">
+      <div className="loading-container" id='about'>
         <div className="loading-spinner"></div>
         <p>Loading About Us content...</p>
       </div>
