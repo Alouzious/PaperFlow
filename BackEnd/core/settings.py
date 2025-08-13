@@ -26,7 +26,11 @@ SECRET_KEY = 'django-insecure-yuw2(&bw^&0zzzg=4)s%t=la%=xt$8@ny)_q6r32$(6*8%bv8l
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']  # Change to your Render app domain or specific domains for production
+ALLOWED_HOSTS = [
+    "paper-flow-backend.onrender.com",
+    "localhost",
+    "127.0.0.1",
+] # Change to your Render app domain or specific domains for production
 
 
 # Application definition
@@ -142,6 +146,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://paper-flow-7s61.vercel.app",
 ]
 
 # Allow credentials to be included in CORS requests
@@ -160,6 +165,7 @@ CORS_ALLOW_ALL_METHODS = True
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://paper-flow-7s61.vercel.app", 
 ]
 
 # Session settings
