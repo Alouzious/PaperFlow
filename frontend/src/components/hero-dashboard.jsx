@@ -10,112 +10,53 @@ const HeroDashboard = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [faculties, setFaculties] = useState([]);
   const searchInputRef = useRef(null);
 
-  // Mock data for search functionality
-  const searchData = [
-    {
-      id: 1,
-      title: 'Faculty of Computing',
-      type: 'faculty',
-      description: 'Computer Science, IT, Software Engineering programs',
-      keywords: ['computing', 'computer science', 'IT', 'software', 'programming', 'technology'],
-      icon: '💻'
-    },
-    {
-      id: 2,
-      title: 'Faculty of Education',
-      type: 'faculty',
-      description: 'Teaching, Curriculum Development, Educational Psychology',
-      keywords: ['education', 'teaching', 'curriculum', 'psychology', 'learning'],
-      icon: '📚'
-    },
-    {
-      id: 3,
-      title: 'Bachelor of Computer Science (BCS)',
-      type: 'course',
-      description: 'Comprehensive computer science degree program',
-      keywords: ['BCS', 'computer science', 'bachelor', 'programming', 'algorithms'],
-      icon: '🎓'
-    },
-    {
-      id: 4,
-      title: 'Bachelor of Information Technology (BIT)',
-      type: 'course',
-      description: 'Information technology and systems management',
-      keywords: ['BIT', 'information technology', 'IT', 'systems', 'networks'],
-      icon: '🖥️'
-    },
-    {
-      id: 5,
-      title: 'Bachelor of Arts in Education (BAE)',
-      type: 'course',
-      description: 'Teaching qualification with specialization',
-      keywords: ['BAE', 'education', 'teaching', 'arts', 'bachelor'],
-      icon: '👨‍🏫'
-    },
-    {
-      id: 6,
-      title: 'Research & Innovation Center',
-      type: 'facility',
-      description: 'Advanced research facilities and labs',
-      keywords: ['research', 'innovation', 'lab', 'technology', 'development'],
-      icon: '🔬'
-    },
-    {
-      id: 7,
-      title: 'Library & Learning Resources',
-      type: 'facility',
-      description: 'Digital and physical learning materials',
-      keywords: ['library', 'books', 'resources', 'learning', 'study'],
-      icon: '📖'
-    },
-    {
-      id: 8,
-      title: 'Student Support Services',
-      type: 'service',
-      description: 'Academic counseling and career guidance',
-      keywords: ['support', 'counseling', 'career', 'guidance', 'academic'],
-      icon: '🤝'
-    }
-  ];
-
+  // Fetch site settings and faculties data
   useEffect(() => {
-    const fetchSiteSettings = async () => {
+    const fetchData = async () => {
       try {
-        // Simulating API call - replace with your actual endpoint
-        const mockSettings = {
-          site_name: 'PaperFlow',
-          welcomemsg: 'Discover excellence in education with our comprehensive programs and world-class facilities. Your journey to success starts here.',
-          backgroundimage2: 'https://images.unsplash.com/photo-1607237138185-eedd9c632b0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2574&q=80'
-        };
-        
-        setSiteSettings(mockSettings);
+        // Fetch site settings
+        const settingsResponse = await fetch('http://localhost:8000/api/site-settings/');
+        if (settingsResponse.ok) {
+          const settingsData = await settingsResponse.json();
+          setSiteSettings(settingsData);
 
-        if (mockSettings.backgroundimage2) {
-          const img = new Image();
-          img.onload = () => {
-            setImageLoaded(true);
-            setImageError(false);
-          };
-          img.onerror = () => {
-            setImageLoaded(false);
-            setImageError(true);
-          };
-          img.src = mockSettings.backgroundimage2;
+          if (settingsData.backgroundimage2) {
+            const img = new Image();
+            img.onload = () => {
+              setImageLoaded(true);
+              setImageError(false);
+            };
+            img.onerror = () => {
+              setImageLoaded(false);
+              setImageError(true);
+            };
+            img.src = settingsData.backgroundimage2;
+          }
+        }
+
+        // Fetch faculties for search functionality
+        const facultiesResponse = await fetch('http://localhost:8000/api/dashboard/');
+        if (facultiesResponse.ok) {
+          const facultiesData = await facultiesResponse.json();
+          setFaculties(facultiesData);
         }
       } catch (error) {
-        console.error('Failed to fetch site settings:', error);
+        console.error('Failed to fetch data:', error);
         setImageError(true);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchSiteSettings();
+    fetchData();
   }, []);
 
-  const handleSearch = (query) => {
+  // Real search functionality using live search API
+  const handleSearch = async (query) => {
     setSearchQuery(query);
     
     if (!query.trim()) {
@@ -124,15 +65,74 @@ const HeroDashboard = () => {
       return;
     }
 
-    const results = searchData.filter(item =>
+    setSearchLoading(true);
+    
+    try {
+      const response = await fetch(`http://localhost:8000/api/live-search/?q=${encodeURIComponent(query)}`);
+      
+      if (response.ok) {
+        const data = await response.json();
+        setSearchResults(data.results || []);
+        setShowResults(true);
+      } else {
+        console.error('Search API error:', response.status);
+        // Fallback to local search if API fails
+        handleLocalSearch(query);
+      }
+    } catch (error) {
+      console.error('Search error:', error);
+      // Fallback to local search if API fails
+      handleLocalSearch(query);
+    } finally {
+      setSearchLoading(false);
+    }
+  };
+
+  // Fallback local search function
+  const handleLocalSearch = (query) => {
+    const searchableData = [];
+    
+    // Add faculties to search
+    faculties.forEach(faculty => {
+      searchableData.push({
+        id: `faculty_${faculty.id}`,
+        title: faculty.name,
+        type: 'faculty',
+        description: faculty.description || `Faculty of ${faculty.name}`,
+        keywords: [faculty.name.toLowerCase(), faculty.code.toLowerCase()],
+        data: faculty,
+        icon: '🏛️'
+      });
+
+      // Add courses to search
+      faculty.courses?.all?.forEach(course => {
+        searchableData.push({
+          id: `course_${course.id}`,
+          title: `${course.name} (${course.code})`,
+          type: 'course',
+          description: `${course.course_type} program in ${faculty.name}`,
+          keywords: [
+            course.name.toLowerCase(), 
+            course.code.toLowerCase(),
+            course.course_type.toLowerCase(),
+            faculty.name.toLowerCase()
+          ],
+          data: { course, faculty },
+          icon: course.course_type === 'bachelor' ? '🎓' : '📜'
+        });
+      });
+    });
+
+    // Filter results based on query
+    const results = searchableData.filter(item =>
       item.title.toLowerCase().includes(query.toLowerCase()) ||
       item.description.toLowerCase().includes(query.toLowerCase()) ||
       item.keywords.some(keyword => 
-        keyword.toLowerCase().includes(query.toLowerCase())
+        keyword.includes(query.toLowerCase())
       )
     );
 
-    setSearchResults(results);
+    setSearchResults(results.slice(0, 8)); // Limit to 8 results
     setShowResults(true);
   };
 
@@ -146,13 +146,76 @@ const HeroDashboard = () => {
   };
 
   const handleResultClick = (result) => {
-    // Handle navigation to the specific section/page
-    console.log('Navigating to:', result);
+    console.log('Search result clicked:', result);
+    
+    if (result.type === 'faculty') {
+      // Scroll to faculty section
+      const facultySection = document.querySelector('#faculties');
+      if (facultySection) {
+        facultySection.scrollIntoView({ behavior: 'smooth' });
+        
+        // Highlight the specific faculty card
+        setTimeout(() => {
+          const facultyCards = document.querySelectorAll('.faculty-card');
+          facultyCards.forEach(card => {
+            const facultyName = card.querySelector('.faculty-name');
+            if (facultyName && facultyName.textContent.includes(result.data.name)) {
+              card.style.transform = 'scale(1.02)';
+              card.style.boxShadow = '0 20px 60px rgba(0, 212, 170, 0.3)';
+              card.style.border = '2px solid #00d4aa';
+              
+              // Reset highlight after 3 seconds
+              setTimeout(() => {
+                card.style.transform = '';
+                card.style.boxShadow = '';
+                card.style.border = '';
+              }, 3000);
+            }
+          });
+        }, 500);
+      }
+    } else if (result.type === 'course') {
+      // Navigate to course page or scroll to faculty and highlight course
+      const { course, faculty } = result.data;
+      
+      // First scroll to faculty section
+      const facultySection = document.querySelector('#faculties');
+      if (facultySection) {
+        facultySection.scrollIntoView({ behavior: 'smooth' });
+        
+        // Find and highlight the specific course button
+        setTimeout(() => {
+          const courseButtons = document.querySelectorAll('.course-button');
+          courseButtons.forEach(button => {
+            const courseCode = button.querySelector('.course-code');
+            if (courseCode && courseCode.textContent.includes(course.code)) {
+              button.style.transform = 'scale(1.05)';
+              button.style.boxShadow = '0 15px 40px rgba(102, 126, 234, 0.4)';
+              button.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+              button.style.color = 'white';
+              
+              // Add pulsing animation
+              button.style.animation = 'pulse 2s infinite';
+              
+              // Reset after 4 seconds
+              setTimeout(() => {
+                button.style.transform = '';
+                button.style.boxShadow = '';
+                button.style.background = '';
+                button.style.color = '';
+                button.style.animation = '';
+              }, 4000);
+            }
+          });
+        }, 500);
+      }
+      
+      // If you want to navigate to course page instead, uncomment this:
+      // window.location.href = `/notes/${faculty.code}/${course.code}`;
+    }
+    
     setShowResults(false);
     setSearchQuery('');
-    
-    // You can implement navigation logic here
-    // For example: navigate to a specific section or page
   };
 
   const handleExploreClick = (e) => {
@@ -184,13 +247,29 @@ const HeroDashboard = () => {
         return <Building className="w-4 h-4" />;
       case 'course':
         return <GraduationCap className="w-4 h-4" />;
-      case 'facility':
-        return <BookOpen className="w-4 h-4" />;
-      case 'service':
-        return <Users className="w-4 h-4" />;
       default:
         return <Search className="w-4 h-4" />;
     }
+  };
+
+  // Generate popular search suggestions from real data
+  const getPopularSearches = () => {
+    const suggestions = new Set();
+    
+    faculties.forEach(faculty => {
+      // Add faculty names (shortened)
+      const facultyWords = faculty.name.split(' ');
+      if (facultyWords.length > 1) {
+        suggestions.add(facultyWords[facultyWords.length - 1]); // Last word like "Computing", "Education"
+      }
+      
+      // Add course codes
+      faculty.courses?.all?.forEach(course => {
+        suggestions.add(course.code);
+      });
+    });
+    
+    return Array.from(suggestions).slice(0, 6);
   };
 
   const heroStyle = {
@@ -409,6 +488,10 @@ const HeroDashboard = () => {
           transform: scale(1.1);
         }
 
+        .search-icon.loading {
+          animation: spin 1s linear infinite;
+        }
+
         /* Search Results */
         .search-results {
           position: absolute;
@@ -489,6 +572,13 @@ const HeroDashboard = () => {
           padding: 2rem 1rem;
           text-align: center;
           color: #7f8c8d;
+          font-style: italic;
+        }
+
+        .search-loading {
+          padding: 1rem;
+          text-align: center;
+          color: #667eea;
           font-style: italic;
         }
 
@@ -580,6 +670,24 @@ const HeroDashboard = () => {
           }
         }
 
+        @keyframes spin {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+
+        @keyframes pulse {
+          0%, 100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.05);
+          }
+        }
+
         /* Responsive Design */
         @media (max-width: 1024px) {
           .hero-section {
@@ -654,7 +762,7 @@ const HeroDashboard = () => {
             Welcome to <span className="highlight">{renderSiteName()}</span>
           </h1>
           <p className="subtitle">
-            {siteSettings?.welcomemsg}
+            {siteSettings?.welcomemsg || 'Discover excellence in education with our comprehensive programs and world-class facilities. Your journey to success starts here.'}
           </p>
           <a 
             href="#about"
@@ -670,11 +778,11 @@ const HeroDashboard = () => {
           <div className="search-container">
             <div className={`search-wrapper ${isSearchFocused ? 'focused' : ''}`}>
               <div className="search-input-wrapper">
-                <Search className="search-icon w-5 h-5" />
+                <Search className={`search-icon w-5 h-5 ${searchLoading ? 'loading' : ''}`} />
                 <input
                   ref={searchInputRef}
                   type="text"
-                  placeholder="Search faculties, courses, facilities..."
+                  placeholder="Search faculties, courses (e.g., BCS, BIT, Computing)..."
                   value={searchQuery}
                   onChange={(e) => handleSearch(e.target.value)}
                   onFocus={() => setIsSearchFocused(true)}
@@ -692,7 +800,11 @@ const HeroDashboard = () => {
               {/* Search Results */}
               {showResults && (
                 <div className="search-results">
-                  {searchResults.length > 0 ? (
+                  {searchLoading ? (
+                    <div className="search-loading">
+                      Searching...
+                    </div>
+                  ) : searchResults.length > 0 ? (
                     searchResults.map((result) => (
                       <div
                         key={result.id}
@@ -700,7 +812,7 @@ const HeroDashboard = () => {
                         onClick={() => handleResultClick(result)}
                       >
                         <div className="result-icon">
-                          {getTypeIcon(result.type)}
+                          {result.icon || getTypeIcon(result.type)}
                         </div>
                         <div className="result-content">
                           <div className="result-title">{result.title}</div>
@@ -723,7 +835,7 @@ const HeroDashboard = () => {
               <div className="search-suggestions">
                 <div className="suggestion-title">Popular searches:</div>
                 <div className="suggestion-tags">
-                  {['Computing', 'Education', 'BCS', 'BIT', 'Research', 'Library'].map((tag) => (
+                  {getPopularSearches().map((tag) => (
                     <span
                       key={tag}
                       className="suggestion-tag"
