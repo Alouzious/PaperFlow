@@ -5,6 +5,7 @@ import Home from './Pages/Home';
 import Dashboard from './Pages/Dashboard';
 import FormPage from './Pages/FormPage';
 import PaperPage from './Pages/PaperPage';
+import About from './Pages/About'; // Add this import
 import './App.css';
 
 function App() {
@@ -25,45 +26,41 @@ function App() {
 
   return (
     <div className="app-container">
-      <Router>
+      <Router basename={process.env.NODE_ENV === 'production' ? '/' : '/'}>
         <Routes>
+          {/* Public routes */}
           <Route path="/form" element={<FormPage />} />
+          <Route path="/about" element={<About />} />
           
-          {/* Keep your existing papers route */}
-          <Route 
-            path="/papers/:facultyCode/:courseCode" 
-            element={isRegistered ? <PaperPage /> : <Navigate to="/" replace />}
-          />
-          // In your main App.js or router setup
-          <Route path="/notes/:facultyCode/:courseCode" element={<PaperPage />} />
-          
-          {/* Add the new notes route */}
-          <Route 
-            path="/notes/:facultyCode/:courseCode" 
+          {/* Protected routes */}
+          <Route
+            path="/papers/:facultyCode/:courseCode"
             element={isRegistered ? <PaperPage /> : <Navigate to="/" replace />}
           />
           
-          <Route 
-            path="/" 
-            element={
-              isRegistered ? (
-                <Navigate to="/dashboard" replace />
-              ) : (
-                <Home onRegister={handleRegistration} />
-              )
-            }
+          <Route
+            path="/notes/:facultyCode/:courseCode"
+            element={isRegistered ? <PaperPage /> : <Navigate to="/" replace />}
           />
           
-          <Route 
-            path="/dashboard" 
-            element={
-              isRegistered ? (
-                <Dashboard />
-              ) : (
-                <Navigate to="/" replace />
-              )
-            }
+          <Route
+            path="/papers"
+            element={isRegistered ? <PaperPage /> : <Navigate to="/" replace />}
           />
+          
+          <Route
+            path="/dashboard"
+            element={isRegistered ? <Dashboard /> : <Navigate to="/" replace />}
+          />
+          
+          {/* Home route */}
+          <Route
+            path="/"
+            element={isRegistered ? <Navigate to="/dashboard" replace /> : <Home onRegister={handleRegistration} />}
+          />
+          
+          {/* Catch all route - redirect to home */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Router>
     </div>
