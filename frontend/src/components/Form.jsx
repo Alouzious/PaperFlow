@@ -73,7 +73,7 @@ function Form() {
     };
 
     try {
-      const response = await fetch('http://localhost:8000/api/check_or_register/', {
+      const response = await fetch('https://paperflow-backend.onrender.com/api/check_or_register/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

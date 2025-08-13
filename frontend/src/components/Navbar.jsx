@@ -10,7 +10,7 @@ const Navbar = ({ isRegistered }) => {
   useEffect(() => {
     const fetchSiteSettings = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/site-settings/');
+        const res = await fetch('https://paperflow-backend.onrender.com/api/site-settings/');
         const data = await res.json();
         console.log('siteSettings:', data);
         setSiteSettings(data);

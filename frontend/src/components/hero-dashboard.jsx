@@ -19,7 +19,7 @@ const HeroDashboard = () => {
     const fetchData = async () => {
       try {
         // Fetch site settings
-        const settingsResponse = await fetch('http://localhost:8000/api/site-settings/');
+        const settingsResponse = await fetch('https://paperflow-backend.onrender.com/api/site-settings/');
         if (settingsResponse.ok) {
           const settingsData = await settingsResponse.json();
           setSiteSettings(settingsData);
@@ -39,7 +39,7 @@ const HeroDashboard = () => {
         }
 
         // Fetch faculties for search functionality
-        const facultiesResponse = await fetch('http://localhost:8000/api/dashboard/');
+        const facultiesResponse = await fetch('https://paperflow-backend.onrender.com/api/dashboard/');
         if (facultiesResponse.ok) {
           const facultiesData = await facultiesResponse.json();
           setFaculties(facultiesData);
@@ -68,7 +68,7 @@ const HeroDashboard = () => {
     setSearchLoading(true);
     
     try {
-      const response = await fetch(`http://localhost:8000/api/live-search/?q=${encodeURIComponent(query)}`);
+      const response = await fetch(`https://paperflow-backend.onrender.com/api/live-search/?q=${encodeURIComponent(query)}`);
       
       if (response.ok) {
         const data = await response.json();

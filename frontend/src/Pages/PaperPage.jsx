@@ -44,7 +44,7 @@ const CourseNotesPage = () => {
     const fetchCourseData = async () => {
       try {
         setInitialLoading(true);
-        const response = await fetch(`http://localhost:8000/api/faculties/${facultyCode}/courses/${courseCode}/`);
+        const response = await fetch(`https://paperflow-backend.onrender.com/api/faculties/${facultyCode}/courses/${courseCode}/`);
         
         if (!response.ok) {
           throw new Error(`Error ${response.status}: ${response.statusText}`);
@@ -74,7 +74,7 @@ const CourseNotesPage = () => {
     try {
       // Add student_id to request if logged in (for access control)
       const studentId = localStorage.getItem('student_id'); // Assuming student ID is stored locally
-      const url = new URL(`http://localhost:8000/api/faculties/${facultyCode}/courses/${courseCode}/${year}/year/${level}/`);
+      const url = new URL(`https://paperflow-backend.onrender.com/api/faculties/${facultyCode}/courses/${courseCode}/${year}/year/${level}/`);
       if (studentId) {
         url.searchParams.append('student_id', studentId);
       }
@@ -113,7 +113,7 @@ const CourseNotesPage = () => {
 
     try {
       const studentId = localStorage.getItem('student_id');
-      const url = new URL(`http://localhost:8000/api/notes/${note.id}/preview/`);
+      const url = new URL(`https://paperflow-backend.onrender.com/api/notes/${note.id}/preview/`);
       if (studentId) {
         url.searchParams.append('student_id', studentId);
       }
@@ -153,7 +153,7 @@ const CourseNotesPage = () => {
   const handleViewDocument = async (note) => {
     try {
       const studentId = localStorage.getItem('student_id');
-      const url = new URL(`http://localhost:8000/api/notes/${note.id}/view/`);
+      const url = new URL(`https://paperflow-backend.onrender.com/api/notes/${note.id}/view/`);
       if (studentId) {
         url.searchParams.append('student_id', studentId);
       }
@@ -186,7 +186,7 @@ const CourseNotesPage = () => {
   // Download document (disabled during trial)
   const handleDownload = async (note) => {
     try {
-      const response = await fetch(`http://localhost:8000/api/notes/${note.id}/download/`);
+      const response = await fetch(`https://paperflow-backend.onrender.com/api/notes/${note.id}/download/`);
       const downloadData = await response.json();
 
       if (response.status === 423) {

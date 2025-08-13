@@ -9,7 +9,7 @@ function FacultyDashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/dashboard/')
+    fetch('https://paperflow-backend.onrender.com/api/dashboard/')
       .then(res => {
         if (!res.ok) throw new Error('Failed to fetch dashboard data');
         return res.json();

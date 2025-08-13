@@ -11,7 +11,7 @@ const HeroSection = () => {
   useEffect(() => {
     const fetchSiteSettings = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/site-settings/');
+        const response = await fetch('https://paperflow-backend.onrender.com/api/site-settings/');
         const data = await response.json();
         console.log('Site settings loaded:', data);
         setSiteSettings(data);

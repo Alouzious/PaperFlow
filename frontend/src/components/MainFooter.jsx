@@ -50,7 +50,7 @@ const MainFooter = () => {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
       
-      const response = await fetch('http://localhost:8000/api/site-settings/', {
+      const response = await fetch('https://paperflow-backend.onrender.com/api/site-settings/', {
         signal: controller.signal,
         headers: {
           'Accept': 'application/json',

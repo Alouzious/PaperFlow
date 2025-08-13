@@ -14,8 +14,8 @@ const About = () => {
       try {
         setLoading(true);
         const [aboutRes, stepsRes] = await Promise.all([
-          axios.get('http://localhost:8000/api/about-us/'),
-          axios.get('http://localhost:8000/api/how-it-works/')
+          axios.get('https://paperflow-backend.onrender.com/api/about-us/'),
+          axios.get('https://paperflow-backend.onrender.com/api/how-it-works/')
         ]);
         setAboutData(aboutRes.data);
         setSteps(stepsRes.data);
