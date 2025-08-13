@@ -12,7 +12,6 @@ const Navbar = () => {
       try {
         const res = await fetch('https://paperflow-backend.onrender.com/api/site-settings/');
         const data = await res.json();
-        console.log('siteSettings:', data);
         setSiteSettings(data);
       } catch (error) {
         console.error('Failed to fetch site settings:', error);
@@ -71,16 +70,14 @@ const Navbar = () => {
     closeMobileMenu();
   };
 
-  // FIXED: Get student data from correct localStorage key
+  // Get student data from localStorage
   const getStudentData = () => {
     try {
-      // Try 'studentData' first (from your Form component)
       let studentData = localStorage.getItem('studentData');
       if (studentData) {
         return JSON.parse(studentData);
       }
       
-      // Fallback to 'student' key if exists
       studentData = localStorage.getItem('student');
       if (studentData) {
         return JSON.parse(studentData);
@@ -95,16 +92,14 @@ const Navbar = () => {
 
   const student = getStudentData();
   
-  // FIXED: Get first two letters of the name
+  // Get avatar initials
   const getAvatarInitials = (fullName) => {
     if (!fullName) return '';
     
     const names = fullName.trim().split(' ');
     if (names.length === 1) {
-      // If only one name, take first two characters
       return names[0].substring(0, 2).toUpperCase();
     } else {
-      // If multiple names, take first letter of first and second name
       return (names[0].charAt(0) + names[1].charAt(0)).toUpperCase();
     }
   };
@@ -123,7 +118,6 @@ const Navbar = () => {
       );
     }
     
-    // For other site names, split by space and apply colors
     const words = siteName.split(' ');
     if (words.length >= 2) {
       return (
@@ -137,13 +131,28 @@ const Navbar = () => {
     return <span className="site-name-second">{siteName}</span>;
   };
 
-  // Navigation links data - keeping desktop and mobile consistent
+  // Navigation links - FIXED: Better routing for React
   const navigationLinks = [
-    { to: "/#faculties", label: "Faculties" },
-    { to: "/#about", label: "About" },
-    { to: "#contact", label: "Contact Us" },
+    { to: "/", label: "Faculties", hash: "#faculties" },
+    { to: "/", label: "About", hash: "#about" },
+    { to: "/", label: "Contact Us", hash: "#contact" },
     { to: "/help", label: "Help?" }
   ];
+
+  // Handle navigation clicks with hash scrolling
+  const handleNavClick = (link) => {
+    closeMobileMenu();
+    
+    if (link.hash) {
+      // Small delay to ensure menu closes first, then scroll
+      setTimeout(() => {
+        const element = document.querySelector(link.hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
+  };
 
   return (
     <nav className="navbar">
@@ -166,8 +175,13 @@ const Navbar = () => {
         {/* Desktop Navigation */}
         <ul className="navbar-links desktop-nav">
           {navigationLinks.map((link, index) => (
-            <li key={index}>
-              <Link to={link.to}>{link.label}</Link>
+            <li key={`desktop-${index}`}>
+              <Link 
+                to={link.to}
+                onClick={() => handleNavClick(link)}
+              >
+                {link.label}
+              </Link>
             </li>
           ))}
           {student && (
@@ -201,23 +215,29 @@ const Navbar = () => {
         {/* Mobile Menu */}
         <div className={`mobile-menu ${isMobileMenuOpen ? 'active' : ''}`}>
           <div className="mobile-menu-content">
-            <ul className="navbar-links mobile-nav">
+            {/* FIXED: Simplified mobile navigation structure */}
+            <div className="mobile-navigation">
               {navigationLinks.map((link, index) => (
-                <li key={index}>
-                  <Link to={link.to} onClick={handleLinkClick}>
+                <div key={`mobile-${index}`} className="mobile-nav-item">
+                  <Link 
+                    to={link.to}
+                    onClick={() => handleNavClick(link)}
+                    className="mobile-nav-link"
+                  >
                     {link.label}
                   </Link>
-                </li>
+                </div>
               ))}
+              
               {student && (
-                <li className="mobile-user-profile">
+                <div className="mobile-user-profile">
                   <div className="user-info">
                     <span className="avatar-circle">{avatarInitials}</span>
                     <span className="user-name">{student.full_name}</span>
                   </div>
-                </li>
+                </div>
               )}
-            </ul>
+            </div>
           </div>
         </div>
       </div>
