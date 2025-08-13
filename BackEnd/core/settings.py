@@ -26,8 +26,13 @@ SECRET_KEY = 'django-insecure-yuw2(&bw^&0zzzg=4)s%t=la%=xt$8@ny)_q6r32$(6*8%bv8l
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['paperflow-backend.onrender.com', 'localhost', '127.0.0.1']
- # Change to your Render app domain or specific domains for production
+# Fix DisallowedHost: allow your Render domain
+ALLOWED_HOSTS = [
+    'paperflow-backend.onrender.com',  # your Render app
+    'www.paperflow-backend.onrender.com',  # optional
+    'localhost',
+    '127.0.0.1',
+]
 
 
 # Application definition
@@ -47,7 +52,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # <-- Add WhiteNoise middleware here
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # <-- WhiteNoise
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -91,46 +96,27 @@ DATABASES = {
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
 ]
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/5.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'  # Where collectstatic will collect files
-
-# Enable WhiteNoise static files storage
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
@@ -146,17 +132,9 @@ CORS_ALLOWED_ORIGINS = [
     "https://paper-flow-7s61.vercel.app",
 ]
 
-# Allow credentials to be included in CORS requests
 CORS_ALLOW_CREDENTIALS = True
-
-# Allow all headers for development (you can be more specific in production)
 CORS_ALLOW_ALL_HEADERS = True
-
-# Allow all HTTP methods for development
 CORS_ALLOW_ALL_METHODS = True
-
-# For development only - allows all origins (NOT recommended for production)
-# CORS_ALLOW_ALL_ORIGINS = True
 
 # CSRF settings for cross-origin requests
 CSRF_TRUSTED_ORIGINS = [
@@ -168,5 +146,5 @@ CSRF_TRUSTED_ORIGINS = [
 # Session settings
 SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_SAMESITE = 'Lax'
-SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
-CSRF_COOKIE_SECURE = False     # Set to True in production with HTTPS
+SESSION_COOKIE_SECURE = False  # Set True in production with HTTPS
+CSRF_COOKIE_SECURE = False     # Set True in production with HTTPS
