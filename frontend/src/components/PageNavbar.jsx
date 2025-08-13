@@ -47,6 +47,18 @@ const Navbar = () => {
     };
   }, [isMobileMenuOpen]);
 
+  // Close mobile menu when window is resized to desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 900 && isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isMobileMenuOpen]);
+
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -125,6 +137,14 @@ const Navbar = () => {
     return <span className="site-name-second">{siteName}</span>;
   };
 
+  // Navigation links data - keeping desktop and mobile consistent
+  const navigationLinks = [
+    { to: "/#faculties", label: "Faculties" },
+    { to: "/#about", label: "About" },
+    { to: "#contact", label: "Contact Us" },
+    { to: "/help", label: "Help?" }
+  ];
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -144,19 +164,12 @@ const Navbar = () => {
         </div>
 
         {/* Desktop Navigation */}
-        <ul className="navbar-links">
-          <li>
-            <Link to="/#faculties">Faculties</Link>
-          </li>
-          <li>
-            <Link to="/#about">About</Link>
-          </li>
-          <li>
-            <Link to="#contact">Contact Us</Link>
-          </li>
-          <li>
-            <Link to="/help">Help?</Link>
-          </li>
+        <ul className="navbar-links desktop-nav">
+          {navigationLinks.map((link, index) => (
+            <li key={index}>
+              <Link to={link.to}>{link.label}</Link>
+            </li>
+          ))}
           {student && (
             <li className="user-profile">
               <div className="user-info">
@@ -188,32 +201,14 @@ const Navbar = () => {
         {/* Mobile Menu */}
         <div className={`mobile-menu ${isMobileMenuOpen ? 'active' : ''}`}>
           <div className="mobile-menu-content">
-            <ul className="navbar-links">
-              <li>
-                <Link to="/dashboard" onClick={handleLinkClick}>
-                  Dashboard
-                </Link>
-              </li>
-              <li>
-                <Link to="/faculty" onClick={handleLinkClick}>
-                  Faculty
-                </Link>
-              </li>
-              <li>
-                <Link to="/about" onClick={handleLinkClick}>
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact" onClick={handleLinkClick}>
-                  Contact Us
-                </Link>
-              </li>
-              <li>
-                <Link to="/help" onClick={handleLinkClick}>
-                  Help?
-                </Link>
-              </li>
+            <ul className="navbar-links mobile-nav">
+              {navigationLinks.map((link, index) => (
+                <li key={index}>
+                  <Link to={link.to} onClick={handleLinkClick}>
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
               {student && (
                 <li className="mobile-user-profile">
                   <div className="user-info">
