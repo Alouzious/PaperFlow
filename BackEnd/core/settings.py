@@ -26,11 +26,8 @@ SECRET_KEY = 'django-insecure-yuw2(&bw^&0zzzg=4)s%t=la%=xt$8@ny)_q6r32$(6*8%bv8l
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    "paper-flow-backend.onrender.com",
-    "localhost",
-    "127.0.0.1",
-] # Change to your Render app domain or specific domains for production
+ALLOWED_HOSTS = ['paperflow-backend.onrender.com', 'localhost', '127.0.0.1']
+ # Change to your Render app domain or specific domains for production
 
 
 # Application definition
