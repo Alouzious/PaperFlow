@@ -59,16 +59,14 @@ const Navbar = ({ isRegistered }) => {
     closeMobileMenu();
   };
 
-  // FIXED: Get student data from correct localStorage key
+  // Get student data from localStorage
   const getStudentData = () => {
     try {
-      // Try 'studentData' first (from your Form component)
       let studentData = localStorage.getItem('studentData');
       if (studentData) {
         return JSON.parse(studentData);
       }
       
-      // Fallback to 'student' key if exists
       studentData = localStorage.getItem('student');
       if (studentData) {
         return JSON.parse(studentData);
@@ -83,16 +81,14 @@ const Navbar = ({ isRegistered }) => {
 
   const student = getStudentData();
   
-  // FIXED: Get first two letters of the name
+  // Get first two letters of the name
   const getAvatarInitials = (fullName) => {
     if (!fullName) return '';
     
     const names = fullName.trim().split(' ');
     if (names.length === 1) {
-      // If only one name, take first two characters
       return names[0].substring(0, 2).toUpperCase();
     } else {
-      // If multiple names, take first letter of first and second name
       return (names[0].charAt(0) + names[1].charAt(0)).toUpperCase();
     }
   };
@@ -111,7 +107,6 @@ const Navbar = ({ isRegistered }) => {
       );
     }
     
-    // For other site names, split by space and apply colors
     const words = siteName.split(' ');
     if (words.length >= 2) {
       return (
@@ -144,9 +139,12 @@ const Navbar = ({ isRegistered }) => {
         </div>
 
         {/* Desktop Navigation */}
-        <ul className="navbar-links">
+        <ul className="navbar-links desktop-only">
           {isRegistered ? (
             <>
+              <li>
+                <Link to="/dashboard">Dashboard</Link>
+              </li>
               <li>
                 <Link to="/faculty">Faculty</Link>
               </li>
@@ -196,15 +194,17 @@ const Navbar = ({ isRegistered }) => {
         </button>
 
         {/* Mobile Menu Overlay */}
-        <div
-          className={`mobile-menu-overlay ${isMobileMenuOpen ? 'active' : ''}`}
-          onClick={closeMobileMenu}
-        ></div>
+        {isMobileMenuOpen && (
+          <div
+            className="mobile-menu-overlay active"
+            onClick={closeMobileMenu}
+          ></div>
+        )}
 
         {/* Mobile Menu */}
         <div className={`mobile-menu ${isMobileMenuOpen ? 'active' : ''}`}>
           <div className="mobile-menu-content">
-            <ul className="navbar-links">
+            <ul className="mobile-navbar-links">
               {isRegistered ? (
                 <>
                   <li>
@@ -213,17 +213,17 @@ const Navbar = ({ isRegistered }) => {
                     </Link>
                   </li>
                   <li>
-                    <Link to="#faculties" onClick={handleLinkClick}>
-                      Faculties
+                    <Link to="/faculty" onClick={handleLinkClick}>
+                      Faculty
                     </Link>
                   </li>
                   <li>
-                    <Link to="#about" onClick={handleLinkClick}>
+                    <Link to="/about" onClick={handleLinkClick}>
                       About
                     </Link>
                   </li>
                   <li>
-                    <Link to="#contact" onClick={handleLinkClick}>
+                    <Link to="/contact" onClick={handleLinkClick}>
                       Contact Us
                     </Link>
                   </li>
