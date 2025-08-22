@@ -12,7 +12,7 @@ const About = () => {
     const fetchAboutData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:8000/api/about-us/');
+        const response = await axios.get('https://paperflow-backend.onrender.com/api/about-us/');
         setAboutData(response.data);
         setError(null);
       } catch (err) {
