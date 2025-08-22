@@ -79,10 +79,12 @@ function Form() {
     }
   };
 
+  // Fixed handleSubmit - removed loading state display
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
 
+    // Set loading but don't show it in UI
     setIsLoading(true);
 
     const sanitizedData = {
@@ -107,7 +109,8 @@ function Form() {
       if (response.ok) {
         // Simulate successful registration for demo
         console.log('Registration successful:', result);
-        alert('Registration successful! Redirecting to dashboard...');
+        // Redirect immediately without showing loading state
+        window.location.href = '/dashboard'; // Change this to your actual dashboard URL
       } else if (response.status === 400 && result?.email) {
         setErrors({ email: result.email[0] });
       } else {
@@ -174,6 +177,8 @@ function Form() {
               value={formData.fullName}
               onChange={handleChange}
               placeholder="Enter your full name"
+              autoComplete="name"
+              inputMode="text"
               style={{
                 width: '100%',
                 padding: '14px 16px',
@@ -184,7 +189,9 @@ function Form() {
                 boxSizing: 'border-box',
                 transition: 'all 0.3s ease',
                 outline: 'none',
-                boxShadow: errors.fullName ? '0 0 0 3px rgba(229, 62, 62, 0.1)' : 'none'
+                boxShadow: errors.fullName ? '0 0 0 3px rgba(229, 62, 62, 0.1)' : 'none',
+                WebkitAppearance: 'none', // Fix iOS styling
+                appearance: 'none'
               }}
               onFocus={(e) => {
                 e.target.style.borderColor = '#667eea';
@@ -222,6 +229,8 @@ function Form() {
               value={formData.email}
               onChange={handleChange}
               placeholder="Enter your email address"
+              autoComplete="email"
+              inputMode="email"
               style={{
                 width: '100%',
                 padding: '14px 16px',
@@ -232,7 +241,9 @@ function Form() {
                 boxSizing: 'border-box',
                 transition: 'all 0.3s ease',
                 outline: 'none',
-                boxShadow: errors.email ? '0 0 0 3px rgba(229, 62, 62, 0.1)' : 'none'
+                boxShadow: errors.email ? '0 0 0 3px rgba(229, 62, 62, 0.1)' : 'none',
+                WebkitAppearance: 'none',
+                appearance: 'none'
               }}
               onFocus={(e) => {
                 e.target.style.borderColor = '#667eea';
@@ -270,6 +281,8 @@ function Form() {
               value={formData.course}
               onChange={handleChange}
               placeholder="e.g. BCS, BIT"
+              autoComplete="off"
+              inputMode="text"
               style={{
                 width: '100%',
                 padding: '14px 16px',
@@ -280,7 +293,9 @@ function Form() {
                 boxSizing: 'border-box',
                 transition: 'all 0.3s ease',
                 outline: 'none',
-                boxShadow: errors.course ? '0 0 0 3px rgba(229, 62, 62, 0.1)' : 'none'
+                boxShadow: errors.course ? '0 0 0 3px rgba(229, 62, 62, 0.1)' : 'none',
+                WebkitAppearance: 'none',
+                appearance: 'none'
               }}
               onFocus={(e) => {
                 e.target.style.borderColor = '#667eea';
@@ -318,6 +333,7 @@ function Form() {
               value={formData.year}
               onChange={handleChange}
               placeholder="e.g. 2024"
+              inputMode="numeric"
               style={{
                 width: '100%',
                 padding: '14px 16px',
@@ -328,7 +344,9 @@ function Form() {
                 boxSizing: 'border-box',
                 transition: 'all 0.3s ease',
                 outline: 'none',
-                boxShadow: errors.year ? '0 0 0 3px rgba(229, 62, 62, 0.1)' : 'none'
+                boxShadow: errors.year ? '0 0 0 3px rgba(229, 62, 62, 0.1)' : 'none',
+                WebkitAppearance: 'none',
+                appearance: 'none'
               }}
               onFocus={(e) => {
                 e.target.style.borderColor = '#667eea';
@@ -372,11 +390,9 @@ function Form() {
             disabled={isLoading}
             style={{
               width: '100%',
-              height: '56px', // Fixed height to prevent expansion
-              padding: '0 16px', // Remove vertical padding since height is fixed
-              background: isLoading 
-                ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' 
-                : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              height: '56px',
+              padding: '0 16px',
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
               color: 'white',
               border: 'none',
               borderRadius: '12px',
@@ -390,9 +406,9 @@ function Form() {
               boxShadow: '0 4px 15px rgba(102, 126, 234, 0.3)',
               transition: 'all 0.3s ease',
               opacity: isLoading ? 0.8 : 1,
-              minHeight: '56px', // Ensure minimum height
-              maxHeight: '56px', // Prevent expansion
-              overflow: 'hidden' // Hide any overflow
+              minHeight: '56px',
+              maxHeight: '56px',
+              overflow: 'hidden'
             }}
             onMouseEnter={(e) => {
               if (!isLoading) {
@@ -407,30 +423,8 @@ function Form() {
               }
             }}
           >
-            {isLoading ? (
-              <>
-                <div style={{
-                  width: '20px',
-                  height: '20px',
-                  border: '2px solid #ffffff3d',
-                  borderTop: '2px solid #fff',
-                  borderRadius: '50%',
-                  animation: 'spin 1s linear infinite'
-                }}></div>
-                Registering...
-              </>
-            ) : (
-              'Register Now'
-            )}
+            Register Now
           </button>
-
-          {/* Add keyframes for spinner animation */}
-          <style>{`
-            @keyframes spin {
-              0% { transform: rotate(0deg); }
-              100% { transform: rotate(360deg); }
-            }
-          `}</style>
         </div>
       </div>
     </div>

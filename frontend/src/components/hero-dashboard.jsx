@@ -688,23 +688,56 @@ const HeroDashboard = () => {
           }
         }
 
-        /* Responsive Design */
+        /* Responsive Design - MOBILE FIXES */
         @media (max-width: 1024px) {
           .hero-section {
             flex-direction: column;
             text-align: center;
             padding: 2rem;
             gap: 3rem;
+            /* Increase min-height to accommodate search results */
+            min-height: 100vh;
           }
 
           .left-side {
             max-width: 100%;
             padding-right: 0;
+            /* Change order - put content after search on mobile */
+            order: 2;
           }
 
           .right-side {
-            order: -1;
+            /* Put search first on mobile */
+            order: 1;
             max-width: 100%;
+          }
+
+          /* Mobile search results positioning */
+          .search-results {
+            /* Use fixed positioning on mobile to avoid collision */
+            position: fixed;
+            top: 20%;
+            left: 1rem;
+            right: 1rem;
+            max-height: 60vh;
+            z-index: 1000;
+            /* Darker background for better mobile visibility */
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(25px);
+            /* Stronger shadow for mobile */
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+          }
+
+          /* Overlay to prevent interaction with content below when search is active */
+          .search-results::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: -1;
           }
         }
 
@@ -712,6 +745,7 @@ const HeroDashboard = () => {
           .hero-section {
             padding: 1rem;
             gap: 2rem;
+            min-height: 100vh;
           }
 
           .left-side h1 {
@@ -725,12 +759,40 @@ const HeroDashboard = () => {
           .search-container {
             max-width: 350px;
           }
+
+          /* Better mobile search results */
+          .search-results {
+            top: 15%;
+            left: 0.5rem;
+            right: 0.5rem;
+            max-height: 65vh;
+            border-radius: 20px;
+          }
+
+          .search-result-item {
+            padding: 0.75rem;
+            gap: 0.75rem;
+          }
+
+          .result-icon {
+            min-width: 35px;
+            height: 35px;
+          }
+
+          .result-title {
+            font-size: 0.9rem;
+          }
+
+          .result-description {
+            font-size: 0.8rem;
+          }
         }
 
         @media (max-width: 480px) {
           .hero-section {
-            min-height: 90vh;
+            min-height: 100vh;
             gap: 1.5rem;
+            padding: 0.5rem;
           }
 
           .left-side h1 {
@@ -749,6 +811,64 @@ const HeroDashboard = () => {
             font-size: 0.8rem;
             padding: 0.3rem 0.6rem;
           }
+
+          /* Optimized mobile search */
+          .search-results {
+            top: 10%;
+            left: 0.25rem;
+            right: 0.25rem;
+            max-height: 70vh;
+            border-radius: 15px;
+          }
+
+          .search-result-item {
+            padding: 0.6rem;
+            gap: 0.6rem;
+          }
+
+          .result-icon {
+            min-width: 30px;
+            height: 30px;
+            font-size: 1.2rem;
+          }
+
+          .result-title {
+            font-size: 0.85rem;
+          }
+
+          .result-description {
+            font-size: 0.75rem;
+          }
+
+          .result-type {
+            font-size: 0.7rem;
+            padding: 0.15rem 0.4rem;
+          }
+        }
+
+        /* Add a close overlay for mobile search */
+        @media (max-width: 1024px) {
+          .search-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+          }
+
+          .search-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+          }
+
+          .search-results {
+            z-index: 1001;
+          }
         }
       `}</style>
 
@@ -756,6 +876,12 @@ const HeroDashboard = () => {
         className={`hero-section ${loading ? 'loading' : ''} ${imageLoaded && !imageError ? 'image-loaded' : ''} ${imageError ? 'image-error' : ''}`}
         style={heroStyle}
       >
+        {/* Mobile Search Overlay */}
+        <div 
+          className={`search-overlay ${showResults ? 'active' : ''}`}
+          onClick={() => setShowResults(false)}
+        />
+
         {/* LEFT SIDE - Content */}
         <div className="hero-content left-side">
           <h1>
