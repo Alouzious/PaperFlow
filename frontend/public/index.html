@@ -10,15 +10,15 @@
   <meta name="google-site-verification" content="082cqGzJ8s7QZjWe9SvZbF08LJ9BJiMKohwn2RiQRBs" />
   
   <!-- SEO Meta Tags -->
-  <meta name="description" content="PaperFlow - AI-powered research paper management system. Organize, track, and manage your academic papers efficiently with intelligent categorization." />
-  <meta name="keywords" content="PaperFlow, research management, AI, papers, productivity, academic, research papers, paper organization, AI research tool" />
+  <meta name="description" content="PaperFlow - Kabale University past paper platform. Access, browse, and manage past exam papers for Faculty of Computing students with organized categories." />
+  <meta name="keywords" content="Kabale University, past papers, Faculty of Computing, FoCLIS, BIT, BCS, DIT, DCS, academic resources, paper organization" />
   <meta name="author" content="PaperFlow Team" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://paper-flow-7s61.vercel.app" />
   
   <!-- Open Graph / Social Sharing -->
-  <meta property="og:title" content="PaperFlow - AI-Powered Research Paper Management" />
-  <meta property="og:description" content="Organize, track, and manage your academic papers efficiently with AI-powered PaperFlow. Smart categorization and productivity tools for researchers." />
+  <meta property="og:title" content="PaperFlow - Kabale University Past Papers" />
+  <meta property="og:description" content="Access and manage past exam papers for Faculty of Computing students at Kabale University. Organized by course, year, and semester." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://paper-flow-7s61.vercel.app" />
   <meta property="og:image" content="https://paper-flow-7s61.vercel.app/logo192.png" />
@@ -27,8 +27,8 @@
   
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="PaperFlow - AI-Powered Research Paper Management" />
-  <meta name="twitter:description" content="Organize, track, and manage your academic papers efficiently with AI-powered PaperFlow." />
+  <meta name="twitter:title" content="PaperFlow - Kabale University Past Papers" />
+  <meta name="twitter:description" content="Access and manage past exam papers for Faculty of Computing students at Kabale University." />
   <meta name="twitter:image" content="https://paper-flow-7s61.vercel.app/logo192.png" />
   <meta name="twitter:image:alt" content="PaperFlow Logo" />
   
@@ -42,20 +42,56 @@
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
   <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
   
-  <title>PaperFlow - AI-Powered Research Paper Management</title>
+  <title>PaperFlow - Kabale University Past Papers</title>
+
+  <!-- Structured Data for Google -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "Kabale University",
+    "url": "https://paper-flow-7s61.vercel.app",
+    "logo": "https://paper-flow-7s61.vercel.app/logo192.png",
+    "sameAs": [
+      "https://www.facebook.com/KabaleUniversity",
+      "https://twitter.com/KabaleUni"
+    ],
+    "department": [
+      {
+        "@type": "CollegeOrUniversity",
+        "name": "Faculty of Computing (FoCLIS)",
+        "url": "https://paper-flow-7s61.vercel.app/notes/FoCLIS"
+      }
+    ],
+    "hasCourse": [
+      {
+        "@type": "Course",
+        "name": "BIT",
+        "url": "https://paper-flow-7s61.vercel.app/notes/FoCLIS/BIT"
+      },
+      {
+        "@type": "Course",
+        "name": "BCS",
+        "url": "https://paper-flow-7s61.vercel.app/notes/FoCLIS/BCS"
+      },
+      {
+        "@type": "Course",
+        "name": "DIT",
+        "url": "https://paper-flow-7s61.vercel.app/notes/FoCLIS/DIT"
+      },
+      {
+        "@type": "Course",
+        "name": "DCS",
+        "url": "https://paper-flow-7s61.vercel.app/notes/FoCLIS/DCS"
+      }
+    ],
+    "description": "PaperFlow provides access to past exam papers for Kabale University students, starting with Faculty of Computing (FoCLIS) and expanding to other faculties. Browse by course, year, and semester, preview papers, and unlock full access."
+  }
+  </script>
+
 </head>
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
-  <!--
-    This HTML file is a template.
-    If you open it directly in the browser, you will see an empty page.
-
-    You can add webfonts, meta tags, or analytics to this file.
-    The build step will place the bundled scripts into the <body> tag.
-
-    To begin the development, run `npm start` or `yarn start`.
-    To create a production bundle, use `npm run build` or `yarn build`.
-  -->
 </body>
 </html>
