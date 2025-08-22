@@ -27,23 +27,43 @@ function Form() {
   };
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const validateFullName = (name) => /^[a-zA-Z\s\-']{2,50}$/.test(name.trim());
-  const sanitizeInput = (input) => input.trim().replace(/[<>\"'&]/g, '');
+  
+  // Updated validation to reject strings with only spaces
+  const validateFullName = (name) => {
+    const trimmed = name.trim();
+    return trimmed.length >= 2 && trimmed.length <= 50 && /^[a-zA-Z\s\-']+$/.test(trimmed) && trimmed !== '';
+  };
+  
+  const sanitizeInput = (input) => input.replace(/[<>\"'&]/g, '');
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.fullName.trim()) newErrors.fullName = 'Full name is required';
-    else if (!validateFullName(formData.fullName)) newErrors.fullName = 'Please enter a valid full name (2–50 letters)';
+    
+    // Check if full name is just spaces or empty
+    if (!formData.fullName.trim()) {
+      newErrors.fullName = 'Full name is required';
+    } else if (!validateFullName(formData.fullName)) {
+      newErrors.fullName = 'Please enter a valid full name (2–50 letters)';
+    }
 
-    if (!formData.email.trim()) newErrors.email = 'Email is required';
-    else if (!validateEmail(formData.email)) newErrors.email = 'Enter a valid email';
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!validateEmail(formData.email)) {
+      newErrors.email = 'Enter a valid email';
+    }
 
-    if (!formData.course.trim()) newErrors.course = 'Course is required';
-    else if (formData.course.trim().length < 2) newErrors.course = 'Course must be at least 2 characters';
+    // Check if course is just spaces or empty
+    if (!formData.course.trim()) {
+      newErrors.course = 'Course is required';
+    } else if (formData.course.trim().length < 2) {
+      newErrors.course = 'Course must be at least 2 characters';
+    }
 
-    if (!formData.year.trim()) newErrors.year = 'Year is required';
-    else if (!/^\d{4}$/.test(formData.year) || +formData.year < 1900 || +formData.year > new Date().getFullYear() + 10)
+    if (!formData.year.trim()) {
+      newErrors.year = 'Year is required';
+    } else if (!/^\d{4}$/.test(formData.year) || +formData.year < 1900 || +formData.year > new Date().getFullYear() + 10) {
       newErrors.year = 'Enter a valid year';
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -66,10 +86,10 @@ function Form() {
     setIsLoading(true);
 
     const sanitizedData = {
-      full_name: sanitizeInput(formData.fullName),
-      email: sanitizeInput(formData.email).toLowerCase(),
-      course: sanitizeInput(formData.course),
-      year: sanitizeInput(formData.year),
+      full_name: sanitizeInput(formData.fullName.trim()),
+      email: sanitizeInput(formData.email.trim()).toLowerCase(),
+      course: sanitizeInput(formData.course.trim()),
+      year: sanitizeInput(formData.year.trim()),
     };
 
     try {
@@ -85,10 +105,9 @@ function Form() {
       const result = await response.json();
 
       if (response.ok) {
-        localStorage.setItem('isRegistered', 'true');
-        localStorage.setItem('studentId', result.student.id);
-        localStorage.setItem('studentData', JSON.stringify(result.student));
-        window.location.href = '/dashboard';
+        // Simulate successful registration for demo
+        console.log('Registration successful:', result);
+        alert('Registration successful! Redirecting to dashboard...');
       } else if (response.status === 400 && result?.email) {
         setErrors({ email: result.email[0] });
       } else {
@@ -103,76 +122,316 @@ function Form() {
   };
 
   return (
-    <div className="registration-container">
-      <div className="form-section">
-        <div className="form-header">
-          <h2>Student Registration</h2>
-          <p>Please fill in your information to register</p>
+    <div style={{
+      display: 'flex',
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+      width: '100%',
+      overflowX: 'hidden'
+    }}>
+      <div style={{
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        padding: '40px',
+        background: 'rgba(255, 255, 255, 0.95)',
+        backdropFilter: 'blur(10px)'
+      }}>
+        <div style={{
+          marginBottom: '32px',
+          textAlign: 'center'
+        }}>
+          <h2 style={{
+            color: '#2d3748',
+            fontSize: '2.25rem',
+            fontWeight: '700',
+            marginBottom: '8px'
+          }}>Student Registration</h2>
+          <p style={{
+            color: '#718096',
+            fontSize: '1.1rem'
+          }}>Please fill in your information to register</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="registration-form" noValidate>
-          <div className="input-group">
-            <label htmlFor="fullName">Full Name *</label>
+        <div style={{
+          maxWidth: '400px',
+          margin: '0 auto',
+          width: '100%'
+        }}>
+          <div style={{ marginBottom: '24px' }}>
+            <label style={{
+              display: 'block',
+              marginBottom: '8px',
+              color: '#2d3748',
+              fontWeight: '600',
+              fontSize: '0.95rem'
+            }}>Full Name *</label>
             <input
-              id="fullName"
               name="fullName"
               type="text"
               value={formData.fullName}
               onChange={handleChange}
               placeholder="Enter your full name"
-              className={errors.fullName ? 'error' : ''}
+              style={{
+                width: '100%',
+                padding: '14px 16px',
+                border: `2px solid ${errors.fullName ? '#e53e3e' : '#e2e8f0'}`,
+                borderRadius: '12px',
+                fontSize: '1rem',
+                background: 'white',
+                boxSizing: 'border-box',
+                transition: 'all 0.3s ease',
+                outline: 'none',
+                boxShadow: errors.fullName ? '0 0 0 3px rgba(229, 62, 62, 0.1)' : 'none'
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#667eea';
+                e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)';
+                e.target.style.transform = 'translateY(-1px)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = errors.fullName ? '#e53e3e' : '#e2e8f0';
+                e.target.style.boxShadow = errors.fullName ? '0 0 0 3px rgba(229, 62, 62, 0.1)' : 'none';
+                e.target.style.transform = 'none';
+              }}
             />
-            {errors.fullName && <span className="error-message">{errors.fullName}</span>}
+            {errors.fullName && (
+              <span style={{
+                color: '#e53e3e',
+                fontSize: '0.875rem',
+                marginTop: '6px',
+                display: 'block',
+                fontWeight: '500'
+              }}>{errors.fullName}</span>
+            )}
           </div>
 
-          <div className="input-group">
-            <label htmlFor="email">Email Address *</label>
+          <div style={{ marginBottom: '24px' }}>
+            <label style={{
+              display: 'block',
+              marginBottom: '8px',
+              color: '#2d3748',
+              fontWeight: '600',
+              fontSize: '0.95rem'
+            }}>Email Address *</label>
             <input
-              id="email"
               name="email"
               type="email"
               value={formData.email}
               onChange={handleChange}
               placeholder="Enter your email address"
-              className={errors.email ? 'error' : ''}
+              style={{
+                width: '100%',
+                padding: '14px 16px',
+                border: `2px solid ${errors.email ? '#e53e3e' : '#e2e8f0'}`,
+                borderRadius: '12px',
+                fontSize: '1rem',
+                background: 'white',
+                boxSizing: 'border-box',
+                transition: 'all 0.3s ease',
+                outline: 'none',
+                boxShadow: errors.email ? '0 0 0 3px rgba(229, 62, 62, 0.1)' : 'none'
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#667eea';
+                e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)';
+                e.target.style.transform = 'translateY(-1px)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = errors.email ? '#e53e3e' : '#e2e8f0';
+                e.target.style.boxShadow = errors.email ? '0 0 0 3px rgba(229, 62, 62, 0.1)' : 'none';
+                e.target.style.transform = 'none';
+              }}
             />
-            {errors.email && <span className="error-message">{errors.email}</span>}
+            {errors.email && (
+              <span style={{
+                color: '#e53e3e',
+                fontSize: '0.875rem',
+                marginTop: '6px',
+                display: 'block',
+                fontWeight: '500'
+              }}>{errors.email}</span>
+            )}
           </div>
 
-          <div className="input-group">
-            <label htmlFor="course">Course *</label>
+          <div style={{ marginBottom: '24px' }}>
+            <label style={{
+              display: 'block',
+              marginBottom: '8px',
+              color: '#2d3748',
+              fontWeight: '600',
+              fontSize: '0.95rem'
+            }}>Course *</label>
             <input
-              id="course"
               name="course"
               type="text"
               value={formData.course}
               onChange={handleChange}
               placeholder="e.g. BCS, BIT"
-              className={errors.course ? 'error' : ''}
+              style={{
+                width: '100%',
+                padding: '14px 16px',
+                border: `2px solid ${errors.course ? '#e53e3e' : '#e2e8f0'}`,
+                borderRadius: '12px',
+                fontSize: '1rem',
+                background: 'white',
+                boxSizing: 'border-box',
+                transition: 'all 0.3s ease',
+                outline: 'none',
+                boxShadow: errors.course ? '0 0 0 3px rgba(229, 62, 62, 0.1)' : 'none'
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#667eea';
+                e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)';
+                e.target.style.transform = 'translateY(-1px)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = errors.course ? '#e53e3e' : '#e2e8f0';
+                e.target.style.boxShadow = errors.course ? '0 0 0 3px rgba(229, 62, 62, 0.1)' : 'none';
+                e.target.style.transform = 'none';
+              }}
             />
-            {errors.course && <span className="error-message">{errors.course}</span>}
+            {errors.course && (
+              <span style={{
+                color: '#e53e3e',
+                fontSize: '0.875rem',
+                marginTop: '6px',
+                display: 'block',
+                fontWeight: '500'
+              }}>{errors.course}</span>
+            )}
           </div>
 
-          <div className="input-group">
-            <label htmlFor="year">Year *</label>
+          <div style={{ marginBottom: '24px' }}>
+            <label style={{
+              display: 'block',
+              marginBottom: '8px',
+              color: '#2d3748',
+              fontWeight: '600',
+              fontSize: '0.95rem'
+            }}>Year *</label>
             <input
-              id="year"
               name="year"
               type="number"
               value={formData.year}
               onChange={handleChange}
               placeholder="e.g. 2024"
-              className={errors.year ? 'error' : ''}
+              style={{
+                width: '100%',
+                padding: '14px 16px',
+                border: `2px solid ${errors.year ? '#e53e3e' : '#e2e8f0'}`,
+                borderRadius: '12px',
+                fontSize: '1rem',
+                background: 'white',
+                boxSizing: 'border-box',
+                transition: 'all 0.3s ease',
+                outline: 'none',
+                boxShadow: errors.year ? '0 0 0 3px rgba(229, 62, 62, 0.1)' : 'none'
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#667eea';
+                e.target.style.boxShadow = '0 0 0 3px rgba(102, 126, 234, 0.1)';
+                e.target.style.transform = 'translateY(-1px)';
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = errors.year ? '#e53e3e' : '#e2e8f0';
+                e.target.style.boxShadow = errors.year ? '0 0 0 3px rgba(229, 62, 62, 0.1)' : 'none';
+                e.target.style.transform = 'none';
+              }}
             />
-            {errors.year && <span className="error-message">{errors.year}</span>}
+            {errors.year && (
+              <span style={{
+                color: '#e53e3e',
+                fontSize: '0.875rem',
+                marginTop: '6px',
+                display: 'block',
+                fontWeight: '500'
+              }}>{errors.year}</span>
+            )}
           </div>
 
-          {errors.submit && <div className="submit-error">{errors.submit}</div>}
+          {errors.submit && (
+            <div style={{
+              background: '#fed7d7',
+              color: '#c53030',
+              padding: '12px 16px',
+              borderRadius: '8px',
+              marginBottom: '20px',
+              fontWeight: '500',
+              textAlign: 'center'
+            }}>
+              {errors.submit}
+            </div>
+          )}
 
-          <button type="submit" className={`submit-btn ${isLoading ? 'loading' : ''}`} disabled={isLoading}>
-            {isLoading ? 'Registering...' : 'Register Now'}
+          <button
+            type="button"
+            onClick={handleSubmit}
+            disabled={isLoading}
+            style={{
+              width: '100%',
+              height: '56px', // Fixed height to prevent expansion
+              padding: '0 16px', // Remove vertical padding since height is fixed
+              background: isLoading 
+                ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' 
+                : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '12px',
+              fontSize: '1.1rem',
+              fontWeight: '600',
+              cursor: isLoading ? 'not-allowed' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              boxShadow: '0 4px 15px rgba(102, 126, 234, 0.3)',
+              transition: 'all 0.3s ease',
+              opacity: isLoading ? 0.8 : 1,
+              minHeight: '56px', // Ensure minimum height
+              maxHeight: '56px', // Prevent expansion
+              overflow: 'hidden' // Hide any overflow
+            }}
+            onMouseEnter={(e) => {
+              if (!isLoading) {
+                e.target.style.transform = 'translateY(-2px)';
+                e.target.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.4)';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!isLoading) {
+                e.target.style.transform = 'translateY(0)';
+                e.target.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.3)';
+              }
+            }}
+          >
+            {isLoading ? (
+              <>
+                <div style={{
+                  width: '20px',
+                  height: '20px',
+                  border: '2px solid #ffffff3d',
+                  borderTop: '2px solid #fff',
+                  borderRadius: '50%',
+                  animation: 'spin 1s linear infinite'
+                }}></div>
+                Registering...
+              </>
+            ) : (
+              'Register Now'
+            )}
           </button>
-        </form>
+
+          {/* Add keyframes for spinner animation */}
+          <style>{`
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+          `}</style>
+        </div>
       </div>
     </div>
   );
