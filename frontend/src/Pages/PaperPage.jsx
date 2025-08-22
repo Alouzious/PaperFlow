@@ -1,5 +1,5 @@
-// CourseNotesPage.jsx - With Navbar and Footer integration
-import React, { useEffect, useState } from 'react';
+// CourseNotesPage.jsx - Enhanced with Mobile Auto-Scroll
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import Navbar from '../components/PageNavbar'; // Adjust path as needed
 import MainFooter from '../components/MainFooter'; // Adjust path as needed
@@ -32,6 +32,9 @@ const CourseNotesPage = () => {
     note: null,
     type: 'view' // 'view' or 'download'
   });
+
+  // Ref for the notes content area to enable scrolling
+  const notesContentRef = useRef(null);
 
   // Check registration status on mount
   useEffect(() => {
@@ -66,14 +69,34 @@ const CourseNotesPage = () => {
     }
   }, [facultyCode, courseCode]);
 
-  // FIXED: Fetch notes for specific year level with proper semester separation
+  // Helper function to detect if user is on mobile
+  const isMobile = () => {
+    return window.innerWidth <= 1024;
+  };
+
+  // Helper function to smoothly scroll to notes content on mobile
+  const scrollToNotesContent = () => {
+    if (isMobile() && notesContentRef.current) {
+      // Calculate offset accounting for navbar height (70px) plus some padding
+      const navbarHeight = 70;
+      const additionalPadding = 20;
+      const targetPosition = notesContentRef.current.offsetTop - navbarHeight - additionalPadding;
+      
+      window.scrollTo({
+        top: targetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  // Enhanced fetch function with mobile scroll
   const fetchYearLevelNotes = async (year, level) => {
     setLoading(true);
     setSelectedYearLevel({ year, level });
     
     try {
       // Add student_id to request if logged in (for access control)
-      const studentId = localStorage.getItem('student_id'); // Assuming student ID is stored locally
+      const studentId = localStorage.getItem('student_id');
       const url = new URL(`https://paperflow-backend.onrender.com/api/faculties/${facultyCode}/courses/${courseCode}/${year}/year/${level}/`);
       if (studentId) {
         url.searchParams.append('student_id', studentId);
@@ -88,6 +111,12 @@ const CourseNotesPage = () => {
       const data = await response.json();
       setYearLevelNotes(data);
       setError(null);
+      
+      // Auto-scroll to content on mobile after data is loaded
+      setTimeout(() => {
+        scrollToNotesContent();
+      }, 100); // Small delay to ensure content is rendered
+      
     } catch (err) {
       console.error('Error fetching year level notes:', err);
       setError(err.message);
@@ -130,7 +159,6 @@ const CourseNotesPage = () => {
       } else {
         // Handle payment required or other errors
         if (response.status === 402) {
-          // Payment required - would show payment modal in future
           alert('Payment required for preview access');
         } else {
           alert(previewData.error || 'Failed to load preview');
@@ -170,9 +198,7 @@ const CourseNotesPage = () => {
         }
       } else {
         if (response.status === 402) {
-          // Payment required - would show payment modal in future
           alert(`Payment required: ${viewData.view_price} UGX to view full document`);
-          // setPaymentModal({ isOpen: true, note: note, type: 'view' });
         } else {
           alert(viewData.error || 'Failed to access document');
         }
@@ -190,12 +216,9 @@ const CourseNotesPage = () => {
       const downloadData = await response.json();
 
       if (response.status === 423) {
-        // Downloads disabled during trial
         alert(downloadData.message || 'Downloads are currently disabled during free trial period');
       } else if (response.status === 402) {
-        // Payment required - would show payment modal in future
         alert(`Payment required: ${downloadData.download_price} UGX to download`);
-        // setPaymentModal({ isOpen: true, note: note, type: 'download' });
       } else if (!response.ok) {
         alert(downloadData.error || 'Download failed');
       }
@@ -381,8 +404,9 @@ const CourseNotesPage = () => {
               </div>
             )}
 
+            {/* Notes Container with Ref for Mobile Scrolling */}
             {!loading && yearLevelNotes && (
-              <div className="notes-container">
+              <div className="notes-container" ref={notesContentRef}>
                 <div className="notes-header">
                   <div>
                     <h2 className="notes-title">
@@ -407,7 +431,6 @@ const CourseNotesPage = () => {
                   </div>
                 ) : (
                   <div className="semesters-list">
-                    {/* FIXED: Each semester now displays its own specific content */}
                     {yearLevelNotes.year_level.semesters.map((semesterData) => (
                       <div key={semesterData.semester?.id || semesterData.id} className="semester-section">
                         <div className="semester-header">
@@ -425,7 +448,6 @@ const CourseNotesPage = () => {
                           </div>
                         ) : (
                           <div className="notes-list">
-                            {/* FIXED: Display only notes specific to this semester */}
                             {semesterData.notes.map((note, index) => (
                               <div 
                                 key={note.id} 
@@ -447,7 +469,6 @@ const CourseNotesPage = () => {
                                       {note.note_type ? note.note_type.charAt(0).toUpperCase() + note.note_type.slice(1) : 'Document'}
                                     </span>
                                     
-                                    {/* Preview and Premium badges */}
                                     {note.has_preview && (
                                       <span className="preview-badge">👁️ Preview</span>
                                     )}
@@ -469,7 +490,6 @@ const CourseNotesPage = () => {
                                   <p className="note-description">{note.description}</p>
                                 )}
                                 
-                                {/* Enhanced footer with preview system */}
                                 <div className="note-footer enhanced-footer">
                                   <div className="note-info">
                                     <span className="file-size">
@@ -484,7 +504,6 @@ const CourseNotesPage = () => {
                                   </div>
                                   
                                   <div className="note-actions">
-                                    {/* Preview button */}
                                     {note.has_preview && (
                                       <button 
                                         className="action-button preview-button"
@@ -494,7 +513,6 @@ const CourseNotesPage = () => {
                                       </button>
                                     )}
                                     
-                                    {/* View full document button */}
                                     <button 
                                       className="action-button view-button"
                                       onClick={() => handleViewDocument(note)}
@@ -502,7 +520,6 @@ const CourseNotesPage = () => {
                                       📖 View Full
                                     </button>
                                     
-                                    {/* Download button (disabled in trial) */}
                                     <button 
                                       className="action-button download-button disabled"
                                       onClick={() => handleDownload(note)}
